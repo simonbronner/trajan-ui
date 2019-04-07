@@ -1,0 +1,115 @@
+{% load static %}
+{% load humanize %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'trajan/semantic.min.css' %}">
+
+<div class="ui inverted vertical header segment">
+  <div class="ui container">
+    <div class="column">
+      <h4 class="ui inverted header">Trajan - Historical stock price querying for the Aussie masses</h4>
+    </div>
+  </div>
+</div>
+
+<div class="ui vertical stripe segment">
+
+  {% if error_message %}
+  <div class="ui error message">
+    <i class="close icon"></i>
+    <div class="header">
+      There was an application error.
+    </div>
+    <p>Please contact trajan@bronner.network for help.</p>
+  </div>
+  {% endif %}
+
+  <div class="ui container segment">
+
+    <div class="ui attached message">
+      <p>Enter stock code and at least "from" field to search for stock data</p>
+    </div>
+    {% if validation_message %}
+    <div class="ui attached warning message">
+      <p>
+        {{ validation_message }}
+      </p>
+    </div>
+    {% endif %}
+    <form class="ui form attached fluid segment" action="{% url 'trajan:index' %}" method="post">
+      {% csrf_token %}
+      <div class="three fields">
+        <div class="field">
+          <label for="ticker">Stock Code</label><br>
+          <input type="text" id="ticker" name="ticker" value="{{ ticker }}" maxlength="3" minlength="3">
+        </div>
+        <div class="field">
+          <label for="d_from">From</label><br>
+          <input type="date" placeholder="yyyy-mm-dd" id="d_from" name="d_from" value="{{ d_from }}">
+        </div>
+        <div class="field">
+          <label for="d_to">To</label><br>
+          <input type="date" placeholder="yyyy-mm-dd" id="d_to" name="d_to" value="{{ d_to }}">
+        </div>
+      </div>
+      <input class="ui blue submit button" type="submit" value="Lookup">
+    </form>
+    <div class="ui bottom attached blue message">
+      Data on this website is free so don't rely on it for investment decisions.
+    </div>
+
+    {% if result_code == 404 %}
+    <div class="ui negative message">
+      <div class="header">
+        I'm sorry, the system cannot find a record for that stock code and time frame.
+      </div>
+      <p>Note that the dataset does not include non-trading days, and is from 1997 onwards.
+      </p>
+    </div>
+    {% endif %}
+
+    {% if result_code == 200 %}
+    <div class="ui positive message">
+      <div class="header">
+        {{ stock_data_record_count }} historical stock price records found!
+      </div>
+      <p>Note that the dataset does not include non-trading days, and is from 1997 onwards.
+    </div>
+    <table class="ui celled table">
+      <thead>
+        <tr>
+          <th>Open</th>
+          <th>High</th>
+          <th>Low</th>
+          <th>Close</th>
+          <th>Volume</th>
+          <th>Day</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in stock_data %}
+        <tr>
+          <td data-label="Open">{{ t.open }}</td>
+          <td data-label="High">{{ t.high }}</td>
+          <td data-label="Low">{{ t.low }}</td>
+          <td data-label="Close">{{ t.close }}</td>
+          <td data-label="Volume">{{ t.volume|intcomma }}</td>
+          <td data-label="Day">{{ t.day|date }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+
+  </div>
+
+</div>
+
+<div class="ui vertical footer segment attached">
+  <div class="ui container">
+    <div class="column">
+      <h4 class="ui header">Historical Australian Share Price Data Service</h4>
+      <p>Frontend build in <a href="https://www.djangoproject.com/">django</a>, backend build in <a href="https://clojure.org">Clojure</a> & data served by <a href="https://www.datomic.com/">Datomic</a></p>
+      <p>See <a href="https://www.asxhistoricaldata.com">www.asxhistoricaldata.com</a> for raw data</p>
+    </div>
+  </div>
+</div>
