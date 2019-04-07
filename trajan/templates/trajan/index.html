@@ -3,15 +3,15 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'trajan/semantic.min.css' %}">
 
-<div class="ui inverted vertical header segment">
+<div class="ui vertical header segment inverted">
   <div class="ui container">
     <div class="column">
-      <h4 class="ui inverted header">Trajan - Historical stock price querying for the Aussie masses</h4>
+      <h4 class="ui header inverted">Trajan - Historical Stock Market price querying for the ASX</h4>
     </div>
   </div>
 </div>
 
-<div class="ui vertical stripe segment">
+<div class="ui vertical segment attached">
 
   {% if error_message %}
   <div class="ui error message">
@@ -104,12 +104,13 @@
 
 </div>
 
-<div class="ui vertical footer segment attached">
-  <div class="ui container">
+<div class="ui segment bottom attached">
+  <div class="ui two column grid container">
     <div class="column">
-      <h4 class="ui header">Historical Australian Share Price Data Service</h4>
-      <p>Frontend build in <a href="https://www.djangoproject.com/">django</a>, backend build in <a href="https://clojure.org">Clojure</a> & data served by <a href="https://www.datomic.com/">Datomic</a></p>
-      <p>See <a href="https://www.asxhistoricaldata.com">www.asxhistoricaldata.com</a> for raw data</p>
+      <p>See source for <a href="https://github.com/sxb8au/trajan">trajan-service</a>, source for <a href="https://github.com/sxb8au/trajan-ui">trajan-ui</a>, <a href="https://github.com/sxb8au/ansible-trajan">ansible playbook</a> for the DevOps goodness and <a href="https://www.asxhistoricaldata.com">www.asxhistoricaldata.com</a> for raw data</p>
+    </div>
+    <div class="column">
+      <p>Frontend build in <a href="https://www.djangoproject.com/">django</a>, backend build in <a href="https://clojure.org">Clojure</a> & data served by <a href="https://www.datomic.com/">Datomic</a>. <br/> Copyright &copy; 2019 Simon Bronner</p>
     </div>
   </div>
 </div>
